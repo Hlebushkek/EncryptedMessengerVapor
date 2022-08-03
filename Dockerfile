@@ -9,6 +9,8 @@ RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true \
     && apt-get -q dist-upgrade -y \
     && rm -rf /var/lib/apt/lists/*
 
+RUN apt-get update && apt-get install -y libssl-dev
+
 # Set up a build area
 WORKDIR /build
 
