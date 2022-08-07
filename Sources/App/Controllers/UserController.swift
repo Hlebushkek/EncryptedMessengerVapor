@@ -17,6 +17,7 @@ struct UserController: RouteCollection {
         userRoute.get(":userID", use: getHandler)
         userRoute.put(":userID", use: updateHandler)
         userRoute.delete(":userID", use: deleteHandler)
+        userRoute.get("search", use: searchHandler)
         userRoute.post(":userID", "chat", ":chatID", use: addChatHandler)
         userRoute.get(":userID", "chat", use: getChatsHandler)
         userRoute.delete(":userID","chat",":chatID", use: removeChatHandler)
@@ -39,7 +40,9 @@ struct UserController: RouteCollection {
         let updatedUser = try req.content.decode(User.self)
         return User.find(req.parameters.get("userID"), on: req.db).unwrap(or: Abort(.notFound)).flatMap { user in
             user.name = updatedUser.name
+            user.imageBase64 = updatedUser.imageBase64
             user.email = updatedUser.email
+            user.password = updatedUser.password
             user.phoneNumber = updatedUser.phoneNumber
             return user.save(on: req.db).map { user }
         }
@@ -51,6 +54,16 @@ struct UserController: RouteCollection {
         }
     }
     
+    func searchHandler(_ req: Request) throws -> EventLoopFuture<User> {
+        guard let searchEmail = req.query[String.self, at: "email"],
+              let searchPassword = req.query[String.self, at: "password"] else {
+            throw Abort(.badRequest)
+        }
+        return User.query(on: req.db).group(.and) { and in
+            and.filter(\.$email == searchEmail)
+            and.filter(\.$password == searchPassword)
+        }.first().unwrap(or: Abort(.notFound))
+    }
     
     //MARK: USER <-> CHAT Relationship
     func addChatHandler(_ req: Request) -> EventLoopFuture<HTTPStatus> {

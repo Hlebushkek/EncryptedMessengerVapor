@@ -10,8 +10,8 @@ import Fluent
 
 struct CreateMessageData: Content {
     let content: String
-    let userID: UUID
-    let chatID: UUID
+    let user: UUID
+    let chat: UUID
 }
 
 struct MessageController: RouteCollection {
@@ -31,7 +31,7 @@ struct MessageController: RouteCollection {
     
     func createHandler(_ req: Request) throws -> EventLoopFuture<Message> {
         let data = try req.content.decode(CreateMessageData.self)
-        let message = Message(content: data.content, userID: data.userID, chatID: data.chatID)
+        let message = Message(content: data.content, userID: data.user, chatID: data.chat)
         return message.save(on: req.db).map { message }
     }
     

@@ -17,10 +17,16 @@ final class User: Model, Content {
     @Field(key: "name")
     var name: String
     
+    @Field(key: "imageBase64")
+    var imageBase64: String?
+    
     @Field(key: "email")
     var email: String
     
-    @Field(key: "number")
+    @Field(key: "password")
+    var password: String
+    
+    @Field(key: "phoneNumber")
     var phoneNumber: String?
     
     @Siblings(through: UserChatPivot.self, from: \.$user, to: \.$chat)
@@ -30,10 +36,12 @@ final class User: Model, Content {
     var messages: [Message]
 
     init() {}
-    init(id: UUID? = nil, name: String, email: String, phoneNumber: String? = nil) {
+    init(id: UUID? = nil, name: String, imageBase64: String?, email: String, password: String, phoneNumber: String? = nil) {
         self.id = id
         self.name = name
+        self.imageBase64 = imageBase64
         self.email = email
+        self.password = password
         self.phoneNumber = phoneNumber
     }
 }

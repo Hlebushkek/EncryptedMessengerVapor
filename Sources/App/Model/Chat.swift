@@ -17,6 +17,9 @@ final class Chat: Model, Content {
     @Field(key: "name")
     var name: String
     
+    @Field(key: "imageBase64")
+    var imageBase64: String?
+    
     @Field(key: "keyBase64")
     var keyBase64: String
     
@@ -27,9 +30,10 @@ final class Chat: Model, Content {
     var messages: [Message]
 
     init() {}
-    init(id: UUID? = nil, name: String, keyBase64: String) {
+    init(id: UUID? = nil, name: String, imageBase64: String?, keyBase64: String) {
         self.id = id
         self.name = name
+        self.imageBase64 = imageBase64
         self.keyBase64 = keyBase64
     }
 }

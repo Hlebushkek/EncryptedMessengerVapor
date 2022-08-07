@@ -12,6 +12,7 @@ struct CreateChat: Migration {
         database.schema("Chat")
             .id()
             .field("name", .string, .required)
+            .field("imageBase64", .string)
             .field("keyBase64", .string, .required)
             .create()
     }

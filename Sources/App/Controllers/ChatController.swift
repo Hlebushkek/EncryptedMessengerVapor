@@ -39,6 +39,7 @@ struct ChatController: RouteCollection {
         let updatedChat = try req.content.decode(Chat.self)
         return Chat.find(req.parameters.get("chatID"), on: req.db).unwrap(or: Abort(.notFound)).flatMap { chat in
             chat.name = updatedChat.name
+            chat.imageBase64 = updatedChat.imageBase64
             chat.keyBase64 = updatedChat.keyBase64
             return chat.save(on: req.db).map { chat }
         }
