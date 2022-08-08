@@ -21,6 +21,8 @@ public func configure(_ app: Application) throws {
     app.migrations.add(CreateUserChatPivot())
     app.migrations.add(CreateMessage())
     
+    Room.shared.app = app
+    
     // register routes
     try routes(app)
 }

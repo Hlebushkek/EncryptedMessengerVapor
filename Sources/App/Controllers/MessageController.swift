@@ -32,7 +32,10 @@ struct MessageController: RouteCollection {
     func createHandler(_ req: Request) throws -> EventLoopFuture<Message> {
         let data = try req.content.decode(CreateMessageData.self)
         let message = Message(content: data.content, userID: data.user, chatID: data.chat)
-        return message.save(on: req.db).map { message }
+        return message.save(on: req.db).map {
+            Room.shared.send(message: message)
+            return message
+        }
     }
     
     func getHandler(_ req: Request) -> EventLoopFuture<Message> {
