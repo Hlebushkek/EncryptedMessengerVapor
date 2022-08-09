@@ -8,12 +8,9 @@ public func configure(_ app: Application) throws {
     // uncomment to serve files from /Public folder
     // app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
 
-//    try app.databases.use(.mongo(
-//        connectionString: Environment.get("DATABASE_URL") ?? "mongodb://localhost:27017/encrypted_messenger_database"
-//    ), as: .mongo)
-    
     try app.databases.use(.mongo(
-        connectionString: Environment.get("MONGODB_URL") ?? "mongodb://localhost:27017/encrypted_messenger_database"), as: .mongo)
+        connectionString: Environment.get("DATABASE_URL") ?? "mongodb://localhost:27017/encrypted_messenger_database"
+    ), as: .mongo)
     
     app.views.use(.leaf)
     
