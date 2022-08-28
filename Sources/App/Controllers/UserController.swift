@@ -15,7 +15,7 @@ struct UserController: RouteCollection {
         userRoute.get(use: getAllHandler)
         userRoute.post(use: createHandler)
         userRoute.get(":userID", use: getHandler)
-        userRoute.put(":userID", use: updateHandler)
+        userRoute.on(.PUT, ":userID", body: .collect(maxSize: "2mb"), use: updateHandler)
         userRoute.delete(":userID", use: deleteHandler)
         userRoute.get("search", use: searchHandler)
         userRoute.post(":userID", "chat", ":chatID", use: addChatHandler)
