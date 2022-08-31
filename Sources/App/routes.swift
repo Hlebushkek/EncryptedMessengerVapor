@@ -15,7 +15,7 @@ func routes(_ app: Application) throws {
     try app.register(collection: ChatController())
     try app.register(collection: UserController())
     
-    app.webSocket("echo") { req, ws in
+    app.webSocket("echo", maxFrameSize: .init(integerLiteral: 1 << 20)) { req, ws in
         ws.onText { ws, text in
             print("OnText")
         }
